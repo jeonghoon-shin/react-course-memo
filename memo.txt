@@ -1,0 +1,159 @@
+-리액트
+UI를 만들기 위한 자바스크립트 라이브러리.
+
+-컴포넌트
+UI의 일부분
+독립적이고, 분리되고, 재사용 가능한 컴포넌트를 조합해 전체 UI를 만든다
+
+--루트 컴포넌트
+반드시 만들어야 하는 컴포넌트
+다른 자식 컴포넌트를 포함함
+
+--트리구조
+모든 리액트 앱은 컴포넌트의 트리구조로 표현된다
+각각의 컴포넌트들은 각각의 UI 요소들을 의미한다
+
+예시)
+루트 컴포넌트 -> 네비게이션바, 프로필, 트렌드, 피드 컴포넌트 등
+피드 컴포넌트 -> 트윗 컴포넌트
+트윗 컴포넌트 -> 좋아요 컴포넌트
+
+좋아요 컴포넌트 같은 경우 트윗 컴포넌트 내부에서뿐만 아니라 다른 컴포넌트를 구성하는데도 사용될 수 있다. (재사용성)
+
+각각의 분리된 독립적인 컨테이너를 만들고 그것들을 조합해 거대한 애플리케이션을 만든다
+
+--구성요소
+자바스크립트 클래스로 구현되며
+state와 render 메서드로 구성된다.
+
+state : 컴포넌트가 보여줄 데이터
+render : UI가 어떻게 보여질지 결정, React Element를 출력함
+React Element: 자바스크립트의 DOM Element를 맵핑함
+
+class Tweet {
+    state = {};
+    render() {
+
+    }
+}
+
+--Virtual DOM
+render 메서드가 출력하는 React Element를 Virtual DOM라고 부른다.
+브라우저의 DOM은 Real DOM이라고 부른다.
+
+실제 DOM보다 생성하는 비용이 저렴함
+
+React Element의 하위 컴포넌트들 중 하나의 상태를 바꾼 새로운 React Element를 생성하면
+실제 DOM에서는 바뀐 부분만 변경된다
+
+-> React Element에서 바뀐 일부분만 감지해서 실제 DOM이 바뀐다.
+-> 바닐라 자바스크립트나 jQuery와 다르게 DOM API를 다뤄야 할 일이 없다.
+쿼리로 DOM를 조작하거나 DOM Element에 이벤트 핸들러를 붙일 필요가 없다.
+-> 컴포넌트의 상태만 바꿔주면 React가 상태에 맞게 DOM의 상태를 바꿔준다.
+
+React Element의 상태를 바꾸면 'React'가 반응(React)해서 DOM의 상태를 바꾼다.
+
+-리액트가 라이브러리인 이유
+리액트는 View를 렌더링하고 상태가 View와 동기화되도록 관리해주기만 하기 때문.
+라우팅이나 HTTPS 서비스를 호출하는 등의 기능은 다른 라이브러리를 사용해야 함
+
+//===============+===============+===============
+
+-개발 환경 세팅
+node, npm 설치
+npm i -g create-react-app
+Visual Studio Code 설치
+Simple React Snippets 확장프로그램 설치
+Prettier - Code formatter 확장프로그램 설치 (포매팅을 위해)
+설정에서 Format on save 체크 (종료할때 자동으로 포매팅 해주도록)
+("editor.formatOnSave": true)
+
+-앱 만들기
+create-react-app [app-name]
+
+추가로 설정을 할필요가 없다. 모든 설정이 자동으로 만들어진다.
+프로덕션 환경을 위해 커스텀해야할경우 항상 eject 해줘야한다.
+
+npm run eject
+
+--만들어지는 것
+개발용 서버
+Webpack
+Babel
+기타등등
+
+--프로젝트 폴더 구성
+node_modules : 리액트를 포함한 서드파티 라이브러리들. 건드릴 일이 없다.
+
+public : 퍼블릭 에셋
+    index.html
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+        메타데이터 속성(attribute)들. 신경쓸 일은 없다.
+
+        <div id="root"></div>
+        루트 컨테이너. 리액트 애플리케이션을 작성하는 곳.
+
+src : 기본적인 컴포넌트들
+    index.js : 애플리케이션의 진입점
+    App.* : 로고 돌아가는 컴포넌트
+        App.js : Component 클래스를 상속받은 App 클래스
+            return 안 마크업 언어는 JSX(Javascript XML)다. String이나 HTML이 아님.
+            컴포넌트의 Output(출력)을 담당함.
+            작동하게 하려면 Babel을 통해야함.
+
+--JSX, Babel
+Babel: 모던 자바스크립트 컴파일러
+JSX 문법을 Javascript 문법으로 변환해준다.
+(JSX가 Javascript보다 사용하기 쉽기 때문)
+
+컴포넌트를 만들 때는 JSX를 쓰고 이걸 바벨로 컴파일해서 React Element 생성을 호출한다.
+
+https://babeljs.io/repl 에서 테스트해볼 수 있다
+
+const element = <h1>Hello World</h1>;
+
+가
+
+// 엘리멘트를 생성
+const element = React.createElement(
+    "h1",           // element의 타입을 결정
+    null,
+    "Hello World",  // 텍스트
+);
+
+로 변환됨.
+
+--package.json, 커스텀 설정
+기본 설정을 커스텀하려고할때 eject 커맨드를 사용해야 함.
+package.json 안의 scripts를 보면 커맨드가 나와있다.
+
+start : development 웹서버를 실행
+build : 프로덕션을 위해 빌드함. 최적화가 이루어짐
+test : 유닛테스트
+eject : create-react-app 에서 빠져나와 프로젝트에 필요한 툴과 설정들을 커스텀할수있다.
+
+dependencies 섹션을 보면 세 개가 있는데
+
+react : 메인 리액트 라이브러리
+react-dom : DOM을 다루는 라이브러리. 브라우저 DOM 안에 React Element를 넣기 위해 쓴 render 메서드 같은것.
+react-scripts : scripts 섹션에 있는 start, build, test, eject.
+
+웹팩이나 바벨같은게 없는 이유: 그런 복잡도는 숨겨진다
+
+---eject
+다시 되돌아오는게 불가능하다.
+뭘 하려는지 모르면 안쓰는게 낫다.
+이걸 쓰면 package.json에 숨겨졌었던 모든 의존성이 다 나온다.
+(웹팩 등)
+
+config 폴더가 생긴다.
+
+웹팩 설정파일
+webpack.config.dev.js // 개발환경
+webpack.config.prod.js // 프로덕션 환경
+
+
+-ES6
+var : 스코프가 function
+let : 스코프가 block
+const : 스코프가 block
